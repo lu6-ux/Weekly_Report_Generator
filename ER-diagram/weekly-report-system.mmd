@@ -1,0 +1,90 @@
+erDiagram
+    USER ||--o{ REPORT : owns
+    USER ||--o{ REVIEW : writes
+    PROJECT ||--o{ REPORT : contains
+    REPORT ||--o{ REPORT_TASK : includes
+    REPORT ||--o{ BLOCKER : records
+    REPORT ||--o{ ACHIEVEMENT : records
+    REPORT ||--o{ WORK_HOUR : logs
+    REPORT ||--o{ REPORT_VERSION : snapshots
+    REPORT ||--o{ REVIEW : receives
+    REPORT_VERSION o|--o{ REVIEW : links
+    
+    USER {
+        string id PK
+        string name
+        string email UK
+        string passwordHash
+        UserRole role
+        datetime createdAt
+        datetime updatedAt
+    }
+    PROJECT {
+        string id PK
+        string name UK
+        string description
+        datetime createdAt
+        datetime updatedAt
+    }
+    REPORT {
+        string id PK
+        datetime weekStart
+        datetime weekEnd
+        ReportStatus status
+        string nextWeekPlans
+        string notes
+        string userId FK
+        string projectId FK
+        datetime createdAt
+        datetime updatedAt
+    }
+    REPORT_TASK {
+        string id PK
+        string taskName
+        Priority priority
+        TaskStatus status
+        int plannedPercent
+        int actualPercent
+        float plannedHours
+        float actualHours
+        string output
+        string reportId FK
+        datetime createdAt
+        datetime updatedAt
+    }
+    BLOCKER {
+        string id PK
+        string description
+        string reportId FK
+        datetime createdAt
+    }
+    ACHIEVEMENT {
+        string id PK
+        string description
+        string reportId FK
+        datetime createdAt
+    }
+    WORK_HOUR {
+        string id PK
+        WorkType workType
+        float hours
+        string notes
+        string reportId FK
+        datetime createdAt
+    }
+    REPORT_VERSION {
+        string id PK
+        int versionNo
+        json snapshot
+        string reportId FK
+        datetime createdAt
+    }
+    REVIEW {
+        string id PK
+        string comment
+        ReportStatus action
+        string reportId FK
+        string reviewerId FK
+        string reportVersionId FK
+        datetime createdAt
+    }
